@@ -490,13 +490,17 @@ jQuery(document).ready(function($) {
             // Start with filter collapsed on mobile
             filterWidget.addClass('collapsed');
             
-            // Wrap filter group content for collapsing
+            // Wrap filter group content for collapsing - only if not already wrapped
             filterGroups.each(function() {
                 var $group = $(this);
-                var $content = $group.find('label, .price-inputs, .attribute-group');
-                if ($content.length > 0 && !$group.find('.filter-content').length) {
-                    $content.wrapAll('<div class="filter-content"></div>');
+                if (!$group.find('.filter-content').length) {
+                    var $content = $group.find('label, .price-inputs, .attribute-group, #price-slider');
+                    if ($content.length > 0) {
+                        $content.wrapAll('<div class="filter-content"></div>');
+                    }
                 }
+                // Start with groups collapsed
+                $group.removeClass('expanded');
             });
             
             // Toggle main filter

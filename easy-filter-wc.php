@@ -766,7 +766,9 @@ class EasyFilterWC {
                 echo '<div class="filter-group">';
                 $categories_title = !empty($options['categories_title']) ? $options['categories_title'] : 'Categorías';
                 echo '<h4>' . esc_html($categories_title) . '</h4>';
+                echo '<div class="filter-content">';
                 echo $categories_html;
+                echo '</div>';
                 echo '</div>';
             }
         }
@@ -811,7 +813,9 @@ class EasyFilterWC {
                 echo '<div class="filter-group">';
                 $tags_title = !empty($options['tags_title']) ? $options['tags_title'] : 'Etiquetas';
                 echo '<h4>' . esc_html($tags_title) . '</h4>';
+                echo '<div class="filter-content">';
                 echo $tags_html;
+                echo '</div>';
                 echo '</div>';
             }
         }
@@ -828,6 +832,7 @@ class EasyFilterWC {
         echo '<div class="filter-group price-filter">';
         $price_title = !empty($options['price_title']) ? $options['price_title'] : 'Rango de Precio';
         echo '<h4>' . esc_html($price_title) . '</h4>';
+        echo '<div class="filter-content">';
         
         if (!empty($options['price_slider'])) {
             echo '<div id="price-slider"></div>';
@@ -853,6 +858,8 @@ class EasyFilterWC {
             echo '<input type="number" name="min_price" placeholder="' . __('Min Price', 'easy-filter-wc') . '" min="' . $prices['min'] . '" max="' . $prices['max'] . '">';
             echo '<input type="number" name="max_price" placeholder="' . __('Max Price', 'easy-filter-wc') . '" min="' . $prices['min'] . '" max="' . $prices['max'] . '">';
         }
+        
+        echo '</div>'; // Close filter-content
         
         echo '</div>';
     }
@@ -925,7 +932,9 @@ class EasyFilterWC {
                 echo '<div class="filter-group">';
                 $attributes_title = !empty($options['attributes_title']) ? $options['attributes_title'] : 'Atributos';
                 echo '<h4>' . esc_html($attributes_title) . '</h4>';
+                echo '<div class="filter-content">';
                 echo $attributes_html;
+                echo '</div>';
                 echo '</div>';
             }
         }

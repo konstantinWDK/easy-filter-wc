@@ -7,11 +7,12 @@
 }
 
 .easy-filter-widget .filter-title {
-    margin: 0 0 20px 0;
+    margin: 4px 0 15px 0;
     padding: 0 0 10px 0;
     border-bottom: 2px solid #333;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 900;
+    text-transform: uppercase;
 }
 
 .filter-group {
@@ -25,9 +26,9 @@
 }
 
 .filter-group h4 {
-    margin: 0 0 12px 0;
-    font-size: 14px!important;
-    font-weight: 600;
+    margin: 14px 0 12px 0;
+    font-size: 14px !important;
+    font-weight: 900;
     color: #333;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -51,7 +52,7 @@
 }
 
 .filter-group label:hover {
-    color: #0073aa;
+    color: #000000;
 }
 
 .filter-group input[type="checkbox"] {
@@ -60,19 +61,14 @@
 }
 
 .attribute-group {
-    margin: 15px 0 10px 0;
-    padding: 12px;
-    background: #f9f9f9;
-    border: 1px solid #e8e8e8;
-    border-radius: 4px;
-    border-left: 3px solid #0073aa;
+  
 }
 
 .attribute-group h5 {
     margin: 0 0 10px 0;
     font-size: 13px;
     font-weight: 600;
-    color: #0073aa;
+    color: #000;
     text-transform: uppercase;
     letter-spacing: 0.3px;
     padding-bottom: 5px;
@@ -91,12 +87,12 @@
 
 .attribute-group label:hover {
     background: #f0f8ff;
-    border-color: #0073aa;
-    color: #0073aa;
+    border-color: #000;
+    color: #000;
 }
 
 .attribute-group input[type="checkbox"]:checked + span {
-    color: #0073aa;
+    color: #000;
     font-weight: 500;
 }
 
@@ -105,21 +101,23 @@
 }
 
 .price-filter #price-slider {
-    margin: 15px 0 20px 0;
+            margin: 8px 14px 10px 16px;
     height: 8px;
     background: #f1f1f1;
     border-radius: 4px;
 }
 
 .price-filter .ui-slider-range {
-    background: #000000;
+    background: #000;
     border-radius: 4px;
+    height: 8px;
+    border: none;
 }
 
 .price-filter .ui-slider-handle {
     width: 18px;
     height: 18px;
-    background: #000000;
+    background: #000;
     border: 2px solid #fff;
     border-radius: 50%;
     cursor: pointer;
@@ -129,7 +127,7 @@
 }
 
 .price-filter .ui-slider-handle:hover {
-    background: #000000;
+    background: #005a87;
 }
 
 .price-inputs {
@@ -147,9 +145,9 @@
 }
 
 .price-inputs input[type="number"]:focus {
-    border-color: #0073aa;
+    border-color: #000;
     outline: none;
-    box-shadow: 0 0 0 1px #0073aa;
+    box-shadow: 0 0 0 1px #000;
 }
 
 .filter-buttons {
@@ -172,7 +170,7 @@
 }
 
 .filter-submit {
-    background: #0073aa;
+    background: #000;
     color: #fff;
     flex: 1;
 }
@@ -222,7 +220,7 @@
 }
 
 .easy-filter-widget input[type="checkbox"]:checked + label {
-    color: #0073aa;
+    color: #000;
     font-weight: 500;
 }
 
@@ -306,9 +304,9 @@
 
 .easy-products-wrapper .woocommerce-pagination .page-numbers:hover,
 .easy-products-wrapper .woocommerce-pagination .page-numbers.current {
-    background: #0073aa;
+    background: #000;
     color: #fff;
-    border-color: #0073aa;
+    border-color: #000;
 }
 
 /* Improved attribute display */
@@ -411,10 +409,12 @@
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease-out;
+        opacity: 0;
     }
     
     .filter-group.expanded .filter-content {
         max-height: 300px;
+        opacity: 1;
     }
     
     .filter-group label {
@@ -442,15 +442,20 @@
     }
     
     .price-inputs {
+        display: flex !important;
         flex-direction: column;
         gap: 4px;
         margin-top: 6px;
+        visibility: visible !important;
     }
     
     .price-inputs input[type="number"] {
+        display: block !important;
         padding: 5px 8px;
         font-size: 11px;
         height: 30px;
+        width: 100%;
+        visibility: visible !important;
     }
     
     .filter-buttons {
@@ -510,7 +515,7 @@
     }
     
     .price-filter #price-slider {
-        margin: 11px 15px 13px 15px;
+              margin: 8px 14px 10px 16px;
     }
     
     /* Mobile filter styles only - let WooCommerce handle products */
@@ -578,14 +583,20 @@
     }
     
     .price-inputs {
+        display: flex !important;
+        flex-direction: column;
         gap: 3px;
         margin-top: 4px;
+        visibility: visible !important;
     }
     
     .price-inputs input[type="number"] {
+        display: block !important;
         padding: 4px 6px;
         font-size: 10px;
         height: 26px;
+        width: 100%;
+        visibility: visible !important;
     }
 }
 
@@ -604,7 +615,7 @@
     height: 30px;
     margin: -15px 0 0 -15px;
     border: 3px solid #f3f3f3;
-    border-top: 3px solid #0073aa;
+    border-top: 3px solid #000;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     z-index: 10;
