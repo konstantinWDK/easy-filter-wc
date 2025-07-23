@@ -67,7 +67,27 @@ class EasyFilterWC {
             'filter_style' => 'checkboxes',
             'price_slider' => 1,
             'ajax_filtering' => 1,
-            'selected_attributes' => array() // Empty array means show all attributes
+            'selected_attributes' => array(), // Empty array means show all attributes
+            // Custom titles
+            'categories_title' => 'Categorías',
+            'tags_title' => 'Etiquetas',
+            'price_title' => 'Rango de Precio',
+            'attributes_title' => 'Atributos',
+            // CSS customization
+            'custom_css_enabled' => 0,
+            'filter_background_color' => '#ffffff',
+            'filter_border_color' => '#e0e0e0',
+            'filter_text_color' => '#333333',
+            'button_background_color' => '#0073aa',
+            'button_text_color' => '#ffffff',
+            'button_hover_color' => '#005a87',
+            'filter_border_radius' => '5',
+            'filter_padding' => '20',
+            // Title size settings
+            'title_size_desktop' => '14',
+            'title_size_mobile' => '13',
+            // Show/hide product count
+            'show_product_count' => 1
         );
         add_option('easy_filter_wc_options', $default_options);
     }
@@ -89,6 +109,20 @@ class EasyFilterWC {
             'easy_filter_wc_main',
             'Opciones del Filtro',
             null,
+            'easy-filter-wc'
+        );
+        
+        add_settings_section(
+            'easy_filter_wc_titles',
+            'Títulos Personalizados',
+            array($this, 'titles_section_callback'),
+            'easy-filter-wc'
+        );
+        
+        add_settings_section(
+            'easy_filter_wc_styling',
+            'Personalización de Estilo',
+            array($this, 'styling_section_callback'),
             'easy-filter-wc'
         );
         
@@ -153,12 +187,187 @@ class EasyFilterWC {
             'easy-filter-wc',
             'easy_filter_wc_main'
         );
+        
+        // Custom titles fields
+        add_settings_field(
+            'categories_title',
+            'Título de Categorías',
+            array($this, 'text_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_titles',
+            array('field' => 'categories_title', 'placeholder' => 'Categorías')
+        );
+        
+        add_settings_field(
+            'tags_title',
+            'Título de Etiquetas',
+            array($this, 'text_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_titles',
+            array('field' => 'tags_title', 'placeholder' => 'Etiquetas')
+        );
+        
+        add_settings_field(
+            'price_title',
+            'Título de Precio',
+            array($this, 'text_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_titles',
+            array('field' => 'price_title', 'placeholder' => 'Rango de Precio')
+        );
+        
+        add_settings_field(
+            'attributes_title',
+            'Título de Atributos',
+            array($this, 'text_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_titles',
+            array('field' => 'attributes_title', 'placeholder' => 'Atributos')
+        );
+        
+        // CSS customization fields
+        add_settings_field(
+            'custom_css_enabled',
+            'Habilitar CSS Personalizado',
+            array($this, 'checkbox_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'custom_css_enabled')
+        );
+        
+        add_settings_field(
+            'filter_background_color',
+            'Color de Fondo',
+            array($this, 'color_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'filter_background_color')
+        );
+        
+        add_settings_field(
+            'filter_border_color',
+            'Color del Borde',
+            array($this, 'color_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'filter_border_color')
+        );
+        
+        add_settings_field(
+            'filter_text_color',
+            'Color del Texto',
+            array($this, 'color_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'filter_text_color')
+        );
+        
+        add_settings_field(
+            'button_background_color',
+            'Color de Fondo de Botones',
+            array($this, 'color_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'button_background_color')
+        );
+        
+        add_settings_field(
+            'button_text_color',
+            'Color de Texto de Botones',
+            array($this, 'color_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'button_text_color')
+        );
+        
+        add_settings_field(
+            'button_hover_color',
+            'Color de Botones al Pasar el Mouse',
+            array($this, 'color_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'button_hover_color')
+        );
+        
+        add_settings_field(
+            'filter_border_radius',
+            'Radio del Borde (px)',
+            array($this, 'number_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'filter_border_radius', 'min' => '0', 'max' => '50')
+        );
+        
+        add_settings_field(
+            'filter_padding',
+            'Espaciado Interno (px)',
+            array($this, 'number_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'filter_padding', 'min' => '0', 'max' => '100')
+        );
+        
+        add_settings_field(
+            'title_size_desktop',
+            'Tamaño de Títulos Desktop (px)',
+            array($this, 'number_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'title_size_desktop', 'min' => '10', 'max' => '24')
+        );
+        
+        add_settings_field(
+            'title_size_mobile',
+            'Tamaño de Títulos Mobile (px)',
+            array($this, 'number_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_styling',
+            array('field' => 'title_size_mobile', 'min' => '10', 'max' => '20')
+        );
+        
+        add_settings_field(
+            'show_product_count',
+            'Mostrar Número de Productos',
+            array($this, 'checkbox_field'),
+            'easy-filter-wc',
+            'easy_filter_wc_main',
+            array('field' => 'show_product_count')
+        );
     }
     
     public function checkbox_field($args) {
         $options = get_option('easy_filter_wc_options');
         $value = isset($options[$args['field']]) ? $options[$args['field']] : 0;
         echo '<input type="checkbox" name="easy_filter_wc_options[' . $args['field'] . ']" value="1" ' . checked(1, $value, false) . ' />';
+    }
+    
+    public function titles_section_callback() {
+        echo '<p>Personaliza los títulos que aparecen en el filtro para cada sección.</p>';
+    }
+    
+    public function styling_section_callback() {
+        echo '<p>Personaliza los colores y estilos del filtro. Debes habilitar el CSS personalizado para que estos cambios tomen efecto.</p>';
+    }
+    
+    public function text_field($args) {
+        $options = get_option('easy_filter_wc_options');
+        $value = isset($options[$args['field']]) ? $options[$args['field']] : '';
+        $placeholder = isset($args['placeholder']) ? $args['placeholder'] : '';
+        echo '<input type="text" name="easy_filter_wc_options[' . $args['field'] . ']" value="' . esc_attr($value) . '" placeholder="' . esc_attr($placeholder) . '" class="regular-text" />';
+    }
+    
+    public function color_field($args) {
+        $options = get_option('easy_filter_wc_options');
+        $value = isset($options[$args['field']]) ? $options[$args['field']] : '';
+        echo '<input type="color" name="easy_filter_wc_options[' . $args['field'] . ']" value="' . esc_attr($value) . '" />';
+    }
+    
+    public function number_field($args) {
+        $options = get_option('easy_filter_wc_options');
+        $value = isset($options[$args['field']]) ? $options[$args['field']] : '';
+        $min = isset($args['min']) ? $args['min'] : '';
+        $max = isset($args['max']) ? $args['max'] : '';
+        echo '<input type="number" name="easy_filter_wc_options[' . $args['field'] . ']" value="' . esc_attr($value) . '" min="' . esc_attr($min) . '" max="' . esc_attr($max) . '" class="small-text" />';
     }
     
     public function attributes_field() {
@@ -277,7 +486,94 @@ class EasyFilterWC {
                 'ajax_url' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('easy_filter_nonce')
             ));
+            
+            // Add custom CSS if enabled
+            $this->add_custom_css();
         }
+    }
+    
+    private function add_custom_css() {
+        $options = get_option('easy_filter_wc_options');
+        
+        if (empty($options['custom_css_enabled'])) {
+            return;
+        }
+        
+        $css = $this->generate_custom_css($options);
+        
+        if (!empty($css)) {
+            wp_add_inline_style('easy-filter-wc', $css);
+        }
+    }
+    
+    private function generate_custom_css($options) {
+        $css = '';
+        
+        // Filter container styles
+        $css .= '.easy-filter-widget {';
+        if (!empty($options['filter_background_color'])) {
+            $css .= 'background-color: ' . esc_attr($options['filter_background_color']) . ';';
+        }
+        if (!empty($options['filter_border_color'])) {
+            $css .= 'border: 1px solid ' . esc_attr($options['filter_border_color']) . ';';
+        }
+        if (!empty($options['filter_text_color'])) {
+            $css .= 'color: ' . esc_attr($options['filter_text_color']) . ';';
+        }
+        if (!empty($options['filter_border_radius'])) {
+            $css .= 'border-radius: ' . intval($options['filter_border_radius']) . 'px;';
+        }
+        if (!empty($options['filter_padding'])) {
+            $css .= 'padding: ' . intval($options['filter_padding']) . 'px;';
+        }
+        $css .= '}';
+        
+        // Button styles
+        $css .= '.easy-filter-widget .filter-submit, .easy-filter-widget .filter-reset {';
+        $css .= 'font-family: "Alumni Sans", Helvetica, Arial, Lucida, sans-serif;';
+        if (!empty($options['button_background_color'])) {
+            $css .= 'background-color: ' . esc_attr($options['button_background_color']) . ';';
+        }
+        if (!empty($options['button_text_color'])) {
+            $css .= 'color: ' . esc_attr($options['button_text_color']) . ';';
+        }
+        if (!empty($options['filter_border_radius'])) {
+            $css .= 'border-radius: ' . intval($options['filter_border_radius']) . 'px;';
+        }
+        $css .= 'border: none; padding: 10px 20px; margin: 5px; cursor: pointer; transition: all 0.3s ease;';
+        $css .= '}';
+        
+        // Button hover states
+        if (!empty($options['button_hover_color'])) {
+            $css .= '.easy-filter-widget .filter-submit:hover, .easy-filter-widget .filter-reset:hover {';
+            $css .= 'background-color: ' . esc_attr($options['button_hover_color']) . ';';
+            $css .= '}';
+        }
+        
+        // Text color for labels and headings
+        if (!empty($options['filter_text_color'])) {
+            $css .= '.easy-filter-widget h4, .easy-filter-widget h5, .easy-filter-widget label {';
+            $css .= 'color: ' . esc_attr($options['filter_text_color']) . ';';
+            $css .= '}';
+        }
+        
+        // Title sizes for desktop
+        if (!empty($options['title_size_desktop'])) {
+            $css .= '.easy-filter-widget .filter-group h4 {';
+            $css .= 'font-size: ' . intval($options['title_size_desktop']) . 'px;';
+            $css .= '}';
+        }
+        
+        // Title sizes for mobile
+        if (!empty($options['title_size_mobile'])) {
+            $css .= '@media (max-width: 768px) {';
+            $css .= '.easy-filter-widget .filter-group h4 {';
+            $css .= 'font-size: ' . intval($options['title_size_mobile']) . 'px;';
+            $css .= '}';
+            $css .= '}';
+        }
+        
+        return $css;
     }
     
     public function shortcode($atts) {
@@ -300,11 +596,11 @@ class EasyFilterWC {
         $current_context = $this->get_current_context();
         
         if (!empty($options['show_categories'])) {
-            $this->render_categories($current_context);
+            $this->render_categories($current_context, $options);
         }
         
         if (!empty($options['show_tags'])) {
-            $this->render_tags($current_context);
+            $this->render_tags($current_context, $options);
         }
         
         if (!empty($options['show_price'])) {
@@ -312,7 +608,7 @@ class EasyFilterWC {
         }
         
         if (!empty($options['show_attributes'])) {
-            $this->render_attributes($current_context);
+            $this->render_attributes($current_context, $options);
         }
         
         // Add current context as hidden field
@@ -409,9 +705,13 @@ class EasyFilterWC {
         return (int) $wpdb->get_var($sql);
     }
     
-    private function render_categories($context = null) {
+    private function render_categories($context = null, $options = null) {
         if (!$context || empty($context['current_products'])) {
             return;
+        }
+        
+        if (!$options) {
+            $options = get_option('easy_filter_wc_options');
         }
         
         // Get categories that are actually used by current products
@@ -455,7 +755,8 @@ class EasyFilterWC {
                     $has_categories_with_products = true;
                     $categories_html .= '<label>';
                     $categories_html .= '<input type="checkbox" name="categories[]" value="' . $category->term_id . '" data-category-name="' . esc_attr($category->name) . '">';
-                    $categories_html .= ' ' . $category->name . ' (' . $product_count . ')';
+                    $count_display = !empty($options['show_product_count']) ? ' (' . $product_count . ')' : '';
+                    $categories_html .= ' ' . $category->name . $count_display;
                     $categories_html .= '</label>';
                 }
             }
@@ -463,16 +764,21 @@ class EasyFilterWC {
             // Only show the Categories section if there are categories with products
             if ($has_categories_with_products) {
                 echo '<div class="filter-group">';
-                echo '<h4>Categorías</h4>';
+                $categories_title = !empty($options['categories_title']) ? $options['categories_title'] : 'Categorías';
+                echo '<h4>' . esc_html($categories_title) . '</h4>';
                 echo $categories_html;
                 echo '</div>';
             }
         }
     }
     
-    private function render_tags($context = null) {
+    private function render_tags($context = null, $options = null) {
         if (!$context || empty($context['current_products'])) {
             return;
+        }
+        
+        if (!$options) {
+            $options = get_option('easy_filter_wc_options');
         }
         
         // Get tags that are actually used by current products
@@ -494,7 +800,8 @@ class EasyFilterWC {
                     $has_tags_with_products = true;
                     $tags_html .= '<label>';
                     $tags_html .= '<input type="checkbox" name="tags[]" value="' . $tag->term_id . '">';
-                    $tags_html .= ' ' . $tag->name . ' (' . $product_count . ')';
+                    $count_display = !empty($options['show_product_count']) ? ' (' . $product_count . ')' : '';
+                    $tags_html .= ' ' . $tag->name . $count_display;
                     $tags_html .= '</label>';
                 }
             }
@@ -502,7 +809,8 @@ class EasyFilterWC {
             // Only show the Tags section if there are tags with products
             if ($has_tags_with_products) {
                 echo '<div class="filter-group">';
-                echo '<h4>Etiquetas</h4>';
+                $tags_title = !empty($options['tags_title']) ? $options['tags_title'] : 'Etiquetas';
+                echo '<h4>' . esc_html($tags_title) . '</h4>';
                 echo $tags_html;
                 echo '</div>';
             }
@@ -518,7 +826,8 @@ class EasyFilterWC {
         }
         
         echo '<div class="filter-group price-filter">';
-        echo '<h4>Rango de Precio</h4>';
+        $price_title = !empty($options['price_title']) ? $options['price_title'] : 'Rango de Precio';
+        echo '<h4>' . esc_html($price_title) . '</h4>';
         
         if (!empty($options['price_slider'])) {
             echo '<div id="price-slider"></div>';
@@ -548,12 +857,14 @@ class EasyFilterWC {
         echo '</div>';
     }
     
-    private function render_attributes($context = null) {
+    private function render_attributes($context = null, $options = null) {
         if (!$context || empty($context['current_products'])) {
             return;
         }
         
-        $options = get_option('easy_filter_wc_options');
+        if (!$options) {
+            $options = get_option('easy_filter_wc_options');
+        }
         $selected_attributes = isset($options['selected_attributes']) ? $options['selected_attributes'] : array();
         
         $attributes = wc_get_attribute_taxonomies();
@@ -581,6 +892,7 @@ class EasyFilterWC {
                     $attribute_has_terms = false;
                     $attribute_html = '<div class="attribute-group">';
                     $attribute_html .= '<h5>' . $attribute->attribute_label . '</h5>';
+                    $attribute_html .= '<div class="attribute-terms">';
                     
                     foreach ($terms as $term) {
                         // Calculate accurate product count for this attribute term in current context
@@ -590,10 +902,13 @@ class EasyFilterWC {
                             $attribute_has_terms = true;
                             $attribute_html .= '<label>';
                             $attribute_html .= '<input type="checkbox" name="attributes[' . $taxonomy . '][]" value="' . $term->term_id . '">';
-                            $attribute_html .= ' ' . $term->name . ' (' . $product_count . ')';
+                            $count_display = !empty($options['show_product_count']) ? ' (' . $product_count . ')' : '';
+                            $attribute_html .= '<span>' . $term->name . $count_display . '</span>';
                             $attribute_html .= '</label>';
                         }
                     }
+                    
+                    $attribute_html .= '</div>';
                     
                     $attribute_html .= '</div>';
                     
@@ -608,7 +923,8 @@ class EasyFilterWC {
             // Only show the entire Attributes section if there's at least one attribute with terms that have products
             if ($has_attributes) {
                 echo '<div class="filter-group">';
-                echo '<h4>Atributos</h4>';
+                $attributes_title = !empty($options['attributes_title']) ? $options['attributes_title'] : 'Atributos';
+                echo '<h4>' . esc_html($attributes_title) . '</h4>';
                 echo $attributes_html;
                 echo '</div>';
             }

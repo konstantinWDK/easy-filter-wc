@@ -26,7 +26,7 @@
 
 .filter-group h4 {
     margin: 0 0 12px 0;
-    font-size: 14px;
+    font-size: 14px!important;
     font-weight: 600;
     color: #333;
     text-transform: uppercase;
@@ -60,9 +60,44 @@
 }
 
 .attribute-group {
-    margin-left: 10px;
-    padding-left: 10px;
-    border-left: 2px solid #f5f5f5;
+    margin: 15px 0 10px 0;
+    padding: 12px;
+    background: #f9f9f9;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    border-left: 3px solid #0073aa;
+}
+
+.attribute-group h5 {
+    margin: 0 0 10px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0073aa;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.attribute-group label {
+    margin-bottom: 6px;
+    padding: 6px 8px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    font-size: 12px;
+}
+
+.attribute-group label:hover {
+    background: #f0f8ff;
+    border-color: #0073aa;
+    color: #0073aa;
+}
+
+.attribute-group input[type="checkbox"]:checked + span {
+    color: #0073aa;
+    font-weight: 500;
 }
 
 .price-filter {
@@ -77,14 +112,14 @@
 }
 
 .price-filter .ui-slider-range {
-    background: #0073aa;
+    background: #000000;
     border-radius: 4px;
 }
 
 .price-filter .ui-slider-handle {
     width: 18px;
     height: 18px;
-    background: #0073aa;
+    background: #000000;
     border: 2px solid #fff;
     border-radius: 50%;
     cursor: pointer;
@@ -94,7 +129,7 @@
 }
 
 .price-filter .ui-slider-handle:hover {
-    background: #005a87;
+    background: #000000;
 }
 
 .price-inputs {
@@ -133,6 +168,7 @@
     transition: all 0.2s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-weight: 700;
 }
 
 .filter-submit {
@@ -165,11 +201,19 @@
 
 @media (max-width: 768px) {
     .easy-filter-widget {
-        padding: 15px;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .easy-filter-widget .filter-title {
+        margin-bottom: 12px;
+        font-size: 16px;
     }
     
     .filter-buttons {
         flex-direction: column;
+        gap: 6px;
+        margin-top: 12px;
     }
     
     .filter-reset {
@@ -267,11 +311,33 @@
     border-color: #0073aa;
 }
 
+/* Improved attribute display */
+.attribute-group .attribute-terms {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.attribute-group .attribute-terms label {
+    margin: 0;
+    padding: 8px 10px;
+    text-align: center;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Mobile Filter Styles */
 @media (max-width: 768px) {
     /* Mobile filter toggle */
     .easy-filter-widget {
         position: relative;
+    }
+    
+    .attribute-group .attribute-terms {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     }
     
     .easy-filter-widget .filter-title {
@@ -309,13 +375,19 @@
     
     /* Compact mobile filter groups */
     .filter-group {
-        margin-bottom: 15px;
-        padding-bottom: 10px;
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #f1f1f1;
+    }
+    
+    .filter-group:last-child {
+        margin-bottom: 0;
+        border-bottom: none;
     }
     
     .filter-group h4 {
         font-size: 13px;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         cursor: pointer;
         position: relative;
         padding-right: 20px;
@@ -347,14 +419,14 @@
     
     .filter-group label {
         font-size: 12px;
-        margin-bottom: 6px;
-        padding: 8px 5px;
-        border-radius: 4px;
+        margin-bottom: 3px;
+        padding: 6px 5px;
+        border-radius: 3px;
         transition: background-color 0.2s ease;
         cursor: pointer;
         display: flex;
         align-items: center;
-        min-height: 36px;
+        min-height: 28px;
         -webkit-tap-highlight-color: rgba(0,0,0,0.1);
     }
     
@@ -371,23 +443,26 @@
     
     .price-inputs {
         flex-direction: column;
-        gap: 8px;
+        gap: 4px;
+        margin-top: 6px;
     }
     
     .price-inputs input[type="number"] {
-        padding: 6px 8px;
-        font-size: 12px;
+        padding: 5px 8px;
+        font-size: 11px;
+        height: 30px;
     }
     
     .filter-buttons {
         flex-direction: row;
-        gap: 8px;
-        margin-top: 15px;
+        gap: 6px;
+        margin-top: 10px;
     }
     
     .filter-submit, .filter-reset {
-        padding: 8px 12px;
-        font-size: 12px;
+        padding: 6px 10px;
+        font-size: 11px;
+        min-height: 32px;
     }
     
     /* Products responsive layout */
@@ -404,7 +479,114 @@
 }
 
 @media (max-width: 480px) {
+    /* Attribute groups mobile optimization */
+    .attribute-group {
+        margin: 8px 0 6px 0;
+        padding: 8px;
+    }
+    
+    .attribute-group h5 {
+        margin: 0 0 6px 0;
+        font-size: 12px;
+        padding-bottom: 3px;
+    }
+    
+    .attribute-group .attribute-terms {
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        gap: 4px;
+        margin-top: 4px;
+    }
+    
+    .attribute-group .attribute-terms label {
+        padding: 5px 6px;
+        font-size: 10px;
+        min-height: 24px;
+        margin: 0;
+    }
+    
+    /* Price filter mobile */
+    .price-filter {
+        margin-bottom: 8px;
+    }
+    
+    .price-filter #price-slider {
+        margin: 11px 15px 13px 15px;
+    }
+    
     /* Mobile filter styles only - let WooCommerce handle products */
+}
+
+@media (max-width: 480px) {
+    /* Ultra-compact mobile styles */
+    .easy-filter-widget {
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+    
+    .easy-filter-widget .filter-title {
+        margin-bottom: 8px;
+        font-size: 15px;
+    }
+    
+    .filter-group {
+        margin-bottom: 6px;
+        padding-bottom: 4px;
+    }
+    
+    .filter-group h4 {
+        margin-bottom: 3px;
+        font-size: 12px;
+    }
+    
+    .filter-group label {
+        margin-bottom: 2px;
+        padding: 4px 5px;
+        min-height: 24px;
+        font-size: 11px;
+    }
+    
+    .attribute-group {
+        margin: 6px 0 4px 0;
+        padding: 6px;
+    }
+    
+    .attribute-group h5 {
+        margin-bottom: 4px;
+        font-size: 11px;
+    }
+    
+    .attribute-group .attribute-terms {
+        gap: 3px;
+        margin-top: 3px;
+    }
+    
+    .attribute-group .attribute-terms label {
+        padding: 4px 5px;
+        font-size: 9px;
+        min-height: 20px;
+    }
+    
+    .filter-buttons {
+        gap: 4px;
+        margin-top: 8px;
+    }
+    
+    .filter-submit, .filter-reset {
+        padding: 5px 8px;
+        font-size: 10px;
+        min-height: 28px;
+    }
+    
+    .price-inputs {
+        gap: 3px;
+        margin-top: 4px;
+    }
+    
+    .price-inputs input[type="number"] {
+        padding: 4px 6px;
+        font-size: 10px;
+        height: 26px;
+    }
 }
 
 /* Loading state for products wrapper */
