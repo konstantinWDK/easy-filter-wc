@@ -389,33 +389,43 @@
         margin-bottom: 4px;
         cursor: pointer;
         position: relative;
-        padding-right: 20px;
+        padding-right: 25px;
+        user-select: none;
     }
     
     .filter-group h4:after {
         content: '+';
         position: absolute;
         right: 0;
-        font-size: 14px;
-        font-weight: normal;
-        transition: transform 0.2s ease;
+        font-size: 16px;
+        font-weight: bold;
+        transition: all 0.2s ease;
+        color: #666;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        line-height: 18px;
+        border-radius: 3px;
+        background: rgba(0,0,0,0.05);
     }
     
     .filter-group.expanded h4:after {
         content: '−';
-        transform: rotate(180deg);
+        color: #000;
+        background: rgba(0,0,0,0.1);
     }
     
     .filter-group .filter-content {
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.3s ease-out;
+        transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
         opacity: 0;
     }
     
     .filter-group.expanded .filter-content {
         max-height: 300px;
         opacity: 1;
+        transition: max-height 0.3s ease-in, opacity 0.3s ease-in;
     }
     
     .filter-group label {

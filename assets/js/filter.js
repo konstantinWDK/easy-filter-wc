@@ -1,16 +1,17 @@
-jQuery(document).ready(function($) {
+jQuery(document).ready(function($) {    
     
     var filterForm = $('#easy-filter-form');
     var originalProducts = null;
     
     function showLoading() {
-        loadingDiv.show();
+        // Preserve filter state before any updates
+        preserveFilterState();
         
-        // Add loading class to custom products container
-        $('#easy-products-container').addClass('loading');
-        
-        // Hide headers and controls during loading
-        $('.woocommerce-products-header, .woocommerce-result-count, .woocommerce-ordering').hide();
+        // Add subtle loading transition to products container
+        $('#easy-products-container, .products, .woocommerce ul.products').css({
+            'opacity': '0.7',
+            'transition': 'opacity 0.3s ease'
+        });
     }
     
     function hideLoading() {
@@ -24,6 +25,9 @@ jQuery(document).ready(function($) {
         setTimeout(function() {
             $('#easy-products-container, .products, .woocommerce ul.products').removeAttr('style');
         }, 400);
+        
+        // Restore filter state after loading is complete
+        restoreFilterState();
     }
     
     function updateProducts(data) {
@@ -413,6 +417,7 @@ jQuery(document).ready(function($) {
     });
     
     filterForm.find('input[type="checkbox"]').on('change', function() {
+        console.log('Easy Filter WC: Checkbox changed:', $(this).attr('name'), 'checked:', $(this).is(':checked'));
         var autoFilter = true;
         if (autoFilter) {
             setTimeout(performFilter, 150);
@@ -489,15 +494,36 @@ jQuery(document).ready(function($) {
     loadFiltersFromURL();
     
     // Mobile filter functionality
+    var mobileFilterInitialized = false;
+    
+    function preserveFilterState() {
+        // Store which groups are expanded before any updates
+        var expandedGroups = $('.filter-group.expanded');
+        expandedGroups.addClass('preserve-expanded');
+        console.log('Easy Filter WC: Preserving state for', expandedGroups.length, 'expanded groups');
+    }
+    
+    function restoreFilterState() {
+        // Restore expanded state after updates
+        var preservedGroups = $('.filter-group.preserve-expanded');
+        preservedGroups.addClass('expanded user-expanded').removeClass('preserve-expanded');
+        console.log('Easy Filter WC: Restoring state for', preservedGroups.length, 'preserved groups');
+    }
+    
     function initMobileFilter() {
+        console.log('Easy Filter WC: initMobileFilter() called, window width:', $(window).width());
         var filterWidget = $('.easy-filter-widget');
         var filterTitle = filterWidget.find('.filter-title');
         var filterGroups = filterWidget.find('.filter-group');
         
         // Only apply mobile functionality on mobile devices
         if ($(window).width() <= 768) {
-            // Start with filter collapsed on mobile
-            filterWidget.addClass('collapsed');
+            console.log('Easy Filter WC: Mobile mode active, initialized:', mobileFilterInitialized);
+            // Only initialize once, preserve state on subsequent calls
+            if (!mobileFilterInitialized) {
+                // Start with filter collapsed on mobile
+                filterWidget.addClass('collapsed');
+            }
             
             // Wrap filter group content for collapsing - only if not already wrapped
             filterGroups.each(function() {
@@ -508,9 +534,19 @@ jQuery(document).ready(function($) {
                         $content.wrapAll('<div class="filter-content"></div>');
                     }
                 }
-                // Start with groups collapsed
-                $group.removeClass('expanded');
+                // Only collapse groups if they haven't been manually expanded AND this is first init
+                if (!$group.hasClass('user-expanded') && !mobileFilterInitialized) {
+                    $group.removeClass('expanded');
+                    console.log('Easy Filter WC: Collapsing group (first init):', $group.find('h4').text());
+                } else if ($group.hasClass('user-expanded')) {
+                    console.log('Easy Filter WC: Preserving user-expanded group:', $group.find('h4').text());
+                }
             });
+            
+            // Mark as initialized after wrapping
+            if (!mobileFilterInitialized) {
+                mobileFilterInitialized = true;
+            }
             
             // Toggle main filter
             filterTitle.off('click.mobile').on('click.mobile', function(e) {
@@ -522,29 +558,67 @@ jQuery(document).ready(function($) {
             filterGroups.find('h4').off('click.mobile').on('click.mobile', function(e) {
                 e.preventDefault();
                 var $group = $(this).closest('.filter-group');
+                var wasExpanded = $group.hasClass('expanded');
                 $group.toggleClass('expanded');
+                
+                // Mark as user-expanded to preserve state
+                if ($group.hasClass('expanded')) {
+                    $group.addClass('user-expanded');
+                    console.log('Easy Filter WC: Group expanded by user:', $group.find('h4').text());
+                } else {
+                    $group.removeClass('user-expanded');
+                    console.log('Easy Filter WC: Group collapsed by user:', $group.find('h4').text());
+                }
                 
                 // Auto-expand main filter if a group is clicked
                 if ($group.hasClass('expanded') && filterWidget.hasClass('collapsed')) {
                     filterWidget.removeClass('collapsed');
                 }
             });
+            
+            // Prevent filter group collapse when clicking on content inside
+            filterGroups.find('.filter-content').off('click.mobile').on('click.mobile', function(e) {
+                e.stopPropagation();
+            });
         } else {
             // Remove mobile classes on desktop
             filterWidget.removeClass('collapsed');
-            filterGroups.removeClass('expanded');
+            filterGroups.removeClass('expanded user-expanded');
             filterTitle.off('click.mobile');
             filterGroups.find('h4').off('click.mobile');
+            filterGroups.find('.filter-content').off('click.mobile');
+            mobileFilterInitialized = false;
         }
     }
     
     // Initialize mobile filter on page load
     initMobileFilter();
     
+    // Debug function to check mobile filter state
+    window.debugMobileFilter = function() {
+        console.log('=== Mobile Filter Debug ===');
+        console.log('Window width:', $(window).width());
+        console.log('Mobile initialized:', mobileFilterInitialized);
+        console.log('Filter widget:', $('.easy-filter-widget').length);
+        console.log('Filter widget classes:', $('.easy-filter-widget').attr('class'));
+        console.log('Filter groups:', $('.filter-group').length);
+        $('.filter-group').each(function(i) {
+            var $group = $(this);
+            console.log('Group ' + i + ':', $group.find('h4').text(), 'Classes:', $group.attr('class'));
+            console.log('  - Has filter-content:', $group.find('.filter-content').length > 0);
+            console.log('  - Is expanded:', $group.hasClass('expanded'));
+            console.log('  - Is user-expanded:', $group.hasClass('user-expanded'));
+        });
+        console.log('========================');
+    };
+    
     // Reinitialize on window resize
     $(window).on('resize', function() {
         clearTimeout(window.resizeTimeout);
-        window.resizeTimeout = setTimeout(initMobileFilter, 250);
+        window.resizeTimeout = setTimeout(function() {
+            console.log('Easy Filter WC: Window resized, reinitializing mobile filter');
+            initMobileFilter();
+        }, 250);
     });
     
     
