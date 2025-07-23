@@ -622,7 +622,7 @@ class EasyFilterWC {
         echo '</div>';
         
         echo '</form>';
-        echo '<div id="filter-loading" style="display:none;">' . __('Loading...', 'easy-filter-wc') . '</div>';
+        // Loading message removed for better UX - using smooth transitions instead
         echo '</div>';
     }
     
@@ -1209,12 +1209,12 @@ class EasyFilterWC {
         // Set up pagination
         $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
         
-        // Get current category if we're on a category page
+        // Get current category - prioritize shortcode parameter, then current page context
         $current_category = '';
-        if (is_product_category()) {
-            $current_category = get_queried_object()->slug;
-        } elseif (!empty($atts['category'])) {
+        if (!empty($atts['category'])) {
             $current_category = $atts['category'];
+        } elseif (is_product_category()) {
+            $current_category = get_queried_object()->slug;
         }
         
         // Set up query args
@@ -1333,7 +1333,7 @@ class EasyFilterWC {
         $first = ($per_page * ($paged - 1)) + 1;
         $last = min($total, $per_page * $paged);
         
-        echo '<p class="woocommerce-result-count">';
+        echo '<p style="display:none!important" class="woocommerce-result-count">';
         if ($total <= $per_page || -1 === $per_page) {
             printf(_n('Showing the single result', 'Showing all %d results', $total, 'easy-filter-wc'), $total);
         } else {
@@ -1346,7 +1346,7 @@ class EasyFilterWC {
         $orderby = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : '';
         $current_url = remove_query_arg('orderby');
         
-        echo '<form class="woocommerce-ordering" method="get">';
+        echo '<form style="display:none!important" class="woocommerce-ordering" method="get">';
         echo '<select name="orderby" class="orderby" aria-label="' . esc_attr__('Shop order', 'easy-filter-wc') . '">';
         
         $options = array(

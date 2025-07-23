@@ -7,10 +7,10 @@
 }
 
 .easy-filter-widget .filter-title {
-    margin: 4px 0 15px 0;
-    padding: 0 0 10px 0;
-    border-bottom: 2px solid #333;
-    font-size: 18px;
+    margin: 4px 0 10px 0;
+    padding: 0 0 4px 0;
+    border-bottom: 2px solid #000000;
+ 
     font-weight: 900;
     text-transform: uppercase;
 }
@@ -320,7 +320,7 @@
 .attribute-group .attribute-terms label {
     margin: 0;
     padding: 8px 10px;
-    text-align: center;
+    text-align: left;
     font-size: 11px;
     white-space: nowrap;
     overflow: hidden;
@@ -343,6 +343,7 @@
         position: relative;
         padding-right: 30px;
         user-select: none;
+           font-size: 13px !important;
     }
     
     .easy-filter-widget .filter-title:after {
@@ -520,6 +521,8 @@
     
     /* Mobile filter styles only - let WooCommerce handle products */
 }
+
+
 
 @media (max-width: 480px) {
     /* Ultra-compact mobile styles */

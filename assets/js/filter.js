@@ -1,7 +1,6 @@
 jQuery(document).ready(function($) {
     
     var filterForm = $('#easy-filter-form');
-    var loadingDiv = $('#filter-loading');
     var originalProducts = null;
     
     function showLoading() {
@@ -15,13 +14,16 @@ jQuery(document).ready(function($) {
     }
     
     function hideLoading() {
-        loadingDiv.hide();
+        // Restore full opacity with smooth transition
+        $('#easy-products-container, .products, .woocommerce ul.products').css({
+            'opacity': '1',
+            'transition': 'opacity 0.4s ease'
+        });
         
-        // Remove loading class from custom products container
-        $('#easy-products-container').removeClass('loading');
-        
-        // Show headers and controls after loading
-        $('.woocommerce-products-header, .woocommerce-result-count, .woocommerce-ordering').show();
+        // Remove inline styles after transition
+        setTimeout(function() {
+            $('#easy-products-container, .products, .woocommerce ul.products').removeAttr('style');
+        }, 400);
     }
     
     function updateProducts(data) {
@@ -52,10 +54,12 @@ jQuery(document).ready(function($) {
         if (productsContainer.length > 0) {
             var targetContainer = productsContainer.first();
             
-            // Handle custom products container specially
+            // Handle custom products container specially with smooth transition
             if (customContainer.length > 0) {
                 targetContainer = customContainer;
-                targetContainer.html(data.products);
+                targetContainer.fadeOut(200, function() {
+                    targetContainer.html(data.products).fadeIn(300);
+                });
             } else {
                 // For Divi, we might need to update the parent container
                 if (targetContainer.hasClass('products') || targetContainer.find('.products').length > 0) {
@@ -63,7 +67,9 @@ jQuery(document).ready(function($) {
                         targetContainer = targetContainer.find('.products').first();
                     }
                 }
-                targetContainer.html(data.products);
+                targetContainer.fadeOut(200, function() {
+                    targetContainer.html(data.products).fadeIn(300);
+                });
             }
             
             // Update result count if exists
@@ -113,10 +119,13 @@ jQuery(document).ready(function($) {
             // Update URL with filter parameters
             updateURL();
             
-            // Smooth scroll to products
-            $('html, body').animate({
-                scrollTop: targetContainer.offset().top - 100
-            }, 500);
+            // Optional gentle scroll to products (removed aggressive scrolling)
+            // Only scroll if user is far from the products area
+            if ($(window).scrollTop() > targetContainer.offset().top + 300) {
+                $('html, body').animate({
+                    scrollTop: targetContainer.offset().top - 50
+                }, 300);
+            }
             
             // Re-initialize any Divi animations or scripts
             if (typeof window.et_reinit_waypoint_modules === 'function') {
@@ -406,7 +415,7 @@ jQuery(document).ready(function($) {
     filterForm.find('input[type="checkbox"]').on('change', function() {
         var autoFilter = true;
         if (autoFilter) {
-            setTimeout(performFilter, 300);
+            setTimeout(performFilter, 150);
         }
     });
     
@@ -435,7 +444,7 @@ jQuery(document).ready(function($) {
         });
         
         priceSlider.on('slidechange', function(event, ui) {
-            setTimeout(performFilter, 300);
+            setTimeout(performFilter, 200);
         });
     }
     
