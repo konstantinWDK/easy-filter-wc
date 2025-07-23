@@ -3,7 +3,7 @@
  * Plugin Name: Easy Filter WC
  * Description: A simple and powerful WooCommerce product filter plugin with category, tag, price, and attribute filtering.
  * Version: 1.0.0
- * Author: Your Name
+ * Author: Konstantin WDK
  * Text Domain: easy-filter-wc
  * Domain Path: /languages
  * Requires at least: 5.0
@@ -11,7 +11,7 @@
  * WC requires at least: 3.0
  * WC tested up to: 8.0
  */
-
+ 
 if (!defined('ABSPATH')) {
     exit;
 }
