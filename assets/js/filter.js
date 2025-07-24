@@ -9,7 +9,7 @@ jQuery(document).ready(function($) {
         
         // Add subtle loading transition to products container
         $('#easy-products-container, .products, .woocommerce ul.products').css({
-            'opacity': '0.7',
+            'opacity': '1',
             'transition': 'opacity 0.3s ease'
         });
     }
